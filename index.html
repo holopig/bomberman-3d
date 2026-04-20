@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="3D Bomberman-style game built with Three.js" />
+    <title>Bomberman 3D</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+      <div class="loader-content">
+        <div class="bomb-icon">💣</div>
+        <h1 class="loader-title">BOMBERMAN <span class="accent">3D</span></h1>
+        <div class="progress-bar-container">
+          <div class="progress-bar" id="progress-bar"></div>
+        </div>
+        <p class="loader-text" id="loader-text">Initializing...</p>
+      </div>
+    </div>
+
+    <!-- HUD Overlay -->
+    <div id="hud">
+      <div class="hud-left">
+        <div class="hud-item" id="hud-bombs">
+          <span class="hud-icon">💣</span>
+          <span class="hud-label">BOMBS</span>
+          <span class="hud-value" id="bomb-count">∞</span>
+        </div>
+        <div class="hud-item" id="hud-lives">
+          <span class="hud-icon">❤️</span>
+          <span class="hud-label">LIVES</span>
+          <span class="hud-value" id="lives-count">3</span>
+        </div>
+      </div>
+      <div class="hud-center">
+        <h1 class="game-title">BOMBERMAN <span class="accent">3D</span></h1>
+      </div>
+      <div class="hud-right">
+        <div class="hud-item">
+          <span class="hud-icon">🎮</span>
+          <span class="hud-label">WASD</span>
+          <span class="hud-value">Move</span>
+        </div>
+        <div class="hud-item">
+          <span class="hud-icon">🔥</span>
+          <span class="hud-label">SPACE</span>
+          <span class="hud-value">Bomb</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div id="game-over" class="overlay hidden">
+      <div class="overlay-content">
+        <h1 id="game-over-title">GAME OVER</h1>
+        <p id="game-over-message">You ran out of lives!</p>
+        <button id="restart-btn" class="glow-button">RESTART MISSION</button>
+      </div>
+    </div>
+
+    <canvas id="game-canvas"></canvas>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
