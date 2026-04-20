@@ -3,7 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <meta name="description" content="3D Bomberman-style game built with Three.js" />
     <title>Bomberman 3D</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -64,6 +67,18 @@
     </div>
 
     <canvas id="game-canvas"></canvas>
+
+    <!-- Mobile Touch Controls -->
+    <div id="touch-controls" aria-hidden="true">
+      <div class="touch-dpad">
+        <button class="dpad-btn dpad-up"    data-key="ArrowUp"    aria-label="Up">▲</button>
+        <button class="dpad-btn dpad-left"  data-key="ArrowLeft"  aria-label="Left">◀</button>
+        <button class="dpad-btn dpad-right" data-key="ArrowRight" aria-label="Right">▶</button>
+        <button class="dpad-btn dpad-down"  data-key="ArrowDown"  aria-label="Down">▼</button>
+      </div>
+      <button id="touch-bomb" class="touch-bomb" aria-label="Drop bomb">💣</button>
+    </div>
+
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>

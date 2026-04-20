@@ -252,3 +252,171 @@ html, body {
   box-shadow: 0 0 25px var(--clr-glow);
   background: var(--clr-accent);
 }
+
+/* ============================
+   Mobile Touch Controls
+   ============================ */
+#touch-controls {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  display: none; /* hidden by default; enabled on touch devices */
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 16px 20px calc(20px + env(safe-area-inset-bottom)) 20px;
+  pointer-events: none; /* only buttons receive events */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.touch-dpad {
+  position: relative;
+  width: 180px;
+  height: 180px;
+  pointer-events: none;
+}
+
+.dpad-btn,
+.touch-bomb {
+  pointer-events: auto;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(18, 18, 30, 0.55);
+  color: var(--clr-text);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  font-family: var(--font-display);
+  cursor: pointer;
+  transition: transform 0.08s ease, background 0.15s ease, box-shadow 0.15s ease;
+}
+
+.dpad-btn {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  border-radius: 14px;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--clr-accent);
+}
+
+.dpad-up    { top: 0;    left: 60px; }
+.dpad-left  { top: 60px; left: 0;    }
+.dpad-right { top: 60px; left: 120px;}
+.dpad-down  { top: 120px;left: 60px; }
+
+.dpad-btn.active,
+.touch-bomb.active {
+  background: rgba(255, 107, 43, 0.45);
+  box-shadow: 0 0 18px rgba(255, 107, 43, 0.6);
+  transform: scale(0.94);
+}
+
+.touch-bomb {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  font-size: 2.4rem;
+  border: 2px solid var(--clr-primary);
+  box-shadow: 0 0 18px rgba(255, 107, 43, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+/* Show touch controls on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  #touch-controls { display: flex; }
+  /* Disable OrbitControls-like gestures on canvas in small screens (prevent accidental pinch) */
+  #game-canvas { touch-action: none; }
+}
+
+/* Fallback class toggled via JS (in case media query misses something) */
+body.touch-device #touch-controls { display: flex; }
+body.touch-device #game-canvas { touch-action: none; }
+
+/* ============================
+   Responsive: phones
+   ============================ */
+@media (max-width: 720px) {
+  /* Loading screen */
+  .bomb-icon { font-size: 3.5rem; }
+  .loader-title {
+    font-size: 1.8rem;
+    letter-spacing: 4px;
+  }
+  .progress-bar-container { width: 70vw; max-width: 320px; }
+  .loader-text { font-size: 0.8rem; letter-spacing: 1.5px; }
+
+  /* HUD: slim, hide keyboard-hint block, stack sensibly */
+  #hud {
+    padding: 8px 10px;
+    gap: 8px;
+  }
+  .hud-left, .hud-right { gap: 8px; }
+  .hud-right { display: none; } /* keyboard hints not relevant on touch */
+  .hud-center .game-title {
+    font-size: 0.85rem;
+    letter-spacing: 2px;
+  }
+  .hud-item {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    gap: 4px;
+  }
+  .hud-icon { font-size: 0.95rem; }
+  .hud-label { font-size: 0.6rem; letter-spacing: 0.5px; }
+  .hud-value { font-size: 0.75rem; }
+
+  /* Game-over overlay */
+  .overlay-content {
+    padding: 2rem 1.5rem;
+    border-radius: 14px;
+    margin: 0 1rem;
+    max-width: 92vw;
+  }
+  .overlay-content h1 { font-size: 2.2rem; }
+  .overlay-content p {
+    font-size: 1rem;
+    letter-spacing: 1px;
+    margin-bottom: 1.5rem;
+  }
+  .glow-button {
+    padding: 0.85rem 1.8rem;
+    font-size: 0.9rem;
+    letter-spacing: 1.5px;
+  }
+}
+
+/* Very small phones / landscape compact */
+@media (max-width: 480px) {
+  .touch-dpad { width: 150px; height: 150px; }
+  .dpad-btn { width: 50px; height: 50px; border-radius: 12px; font-size: 1.1rem; }
+  .dpad-up    { top: 0;    left: 50px; }
+  .dpad-left  { top: 50px; left: 0;    }
+  .dpad-right { top: 50px; left: 100px;}
+  .dpad-down  { top: 100px;left: 50px; }
+
+  .touch-bomb { width: 82px; height: 82px; font-size: 2rem; margin-bottom: 16px; }
+
+  .hud-center .game-title { display: none; } /* free up space */
+}
+
+/* Landscape on short screens — keep controls compact */
+@media (max-height: 480px) and (orientation: landscape) {
+  #touch-controls { padding: 8px 16px calc(10px + env(safe-area-inset-bottom)) 16px; }
+  .touch-dpad { width: 150px; height: 150px; }
+  .dpad-btn { width: 50px; height: 50px; font-size: 1.1rem; }
+  .dpad-up    { top: 0;    left: 50px; }
+  .dpad-left  { top: 50px; left: 0;    }
+  .dpad-right { top: 50px; left: 100px;}
+  .dpad-down  { top: 100px;left: 50px; }
+  .touch-bomb { width: 78px; height: 78px; font-size: 1.8rem; margin-bottom: 6px; }
+}

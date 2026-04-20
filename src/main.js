@@ -947,12 +947,68 @@ function init() {
     }
     window.removeEventListener('click', unlocker);
     window.removeEventListener('keydown', unlocker);
+    window.removeEventListener('touchstart', unlocker);
   };
   window.addEventListener('click', unlocker);
   window.addEventListener('keydown', unlocker);
+  window.addEventListener('touchstart', unlocker, { passive: true });
 
   // OrbitControls setup
   setupControls();
+
+  // Mobile touch controls
+  setupTouchControls();
+}
+
+function setupTouchControls() {
+  const isTouch = window.matchMedia('(hover: none) and (pointer: coarse)').matches
+    || 'ontouchstart' in window
+    || navigator.maxTouchPoints > 0;
+  if (isTouch) document.body.classList.add('touch-device');
+
+  const fireKey = (type, code) => {
+    window.dispatchEvent(new KeyboardEvent(type, { code, key: code, bubbles: true }));
+  };
+
+  // D-pad: hold = key down, release = key up
+  document.querySelectorAll('.dpad-btn').forEach(btn => {
+    const code = btn.dataset.key;
+    const press = (e) => {
+      e.preventDefault();
+      btn.classList.add('active');
+      fireKey('keydown', code);
+      if (btn.setPointerCapture && e.pointerId != null) {
+        try { btn.setPointerCapture(e.pointerId); } catch (_) {}
+      }
+    };
+    const release = (e) => {
+      e.preventDefault();
+      btn.classList.remove('active');
+      fireKey('keyup', code);
+    };
+    btn.addEventListener('pointerdown', press);
+    btn.addEventListener('pointerup', release);
+    btn.addEventListener('pointercancel', release);
+    btn.addEventListener('pointerleave', (e) => {
+      if (btn.classList.contains('active')) release(e);
+    });
+    // Prevent iOS context menu / callout
+    btn.addEventListener('contextmenu', (e) => e.preventDefault());
+  });
+
+  // Bomb button: tap fires a single Space keydown (existing handler places a bomb)
+  const bombBtn = document.getElementById('touch-bomb');
+  if (bombBtn) {
+    const tap = (e) => {
+      e.preventDefault();
+      bombBtn.classList.add('active');
+      fireKey('keydown', 'Space');
+      fireKey('keyup', 'Space');
+      setTimeout(() => bombBtn.classList.remove('active'), 120);
+    };
+    bombBtn.addEventListener('pointerdown', tap);
+    bombBtn.addEventListener('contextmenu', (e) => e.preventDefault());
+  }
 }
 
 let controls;
